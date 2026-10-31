@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vault Protocol — AI Bank Heist Game</title>
+  <meta name="description" content="A fictional talk-your-way-in heist game powered by Gemma." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- ============ TOP SECTION ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">▣</span>
+      <div>
+        <h1>VAULT PROTOCOL</h1>
+        <p class="subtitle">Talk your way into the vault · powered by Gemma</p>
+      </div>
+    </div>
+
+    <div class="stage-info">
+      <div class="stage-label"><span id="stageLabel">STAGE 1 / 2</span> · <span id="characterLabel">Officer Marcus</span></div>
+      <p class="objective" id="objective">Loading…</p>
+      <div class="progress" aria-label="Stage progress">
+        <div class="progress-step" id="step1"><span>1</span> Front Desk</div>
+        <div class="progress-line"></div>
+        <div class="progress-step" id="step2"><span>2</span> Vault Keeper</div>
+        <div class="progress-line"></div>
+        <div class="progress-step" id="step3"><span>✓</span> Vault</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn btn-ghost" id="soundBtn" type="button" title="Turn the typing sound on or off" aria-pressed="true">🔊 Sound</button>
+      <button class="btn btn-ghost" id="restartBtn" type="button" title="Restart the game">↻ Restart</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ MAIN COLUMN ============ -->
+    <section class="main-col">
+      <!-- Intelligence dossier (compact, above the chat) -->
+      <section class="panel dossier" aria-labelledby="dossierTitle">
+        <div class="panel-title" id="dossierTitle"><span class="dot red"></span>INTEL <span class="tag">FICTIONAL</span></div>
+        <dl class="dossier-grid">
+          <div><dt>Bank manager</dt><dd id="dossierManager">—</dd></div>
+          <div><dt>CEO</dt><dd id="dossierCeo">—</dd></div>
+          <div><dt>Your cover</dt><dd id="dossierCover">—</dd></div>
+        </dl>
+        <p class="hint">Talk like a friendly coworker. <strong>Too professional</strong> (or “sir”) and <strong>too frank</strong> (rude) both raise suspicion.</p>
+      </section>
+
+      <!-- Suspicion meter -->
+      <section class="panel meter-panel" aria-labelledby="meterTitle">
+        <div class="meter-head">
+          <div class="panel-title" id="meterTitle"><span class="dot red pulse"></span>SUSPICION LEVEL</div>
+          <div class="meter-value"><span id="suspicionValue">50</span>%</div>
+        </div>
+        <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" id="meter">
+          <div class="meter-fill" id="meterFill"></div>
+          <div class="meter-target" id="meterTarget" title="Target"><span id="meterTargetLabel">≤30</span></div>
+          <div class="meter-arrest" id="meterArrest" title="Arrest"><span id="meterArrestLabel">ARREST 65</span></div>
+        </div>
+        <div class="feedback" id="feedback" aria-live="polite">
+          <span class="delta" id="feedbackDelta"></span>
+          <span id="feedbackText">Speak with the character to begin.</span>
+        </div>
+      </section>
+
+      <!-- Chat -->
+      <section class="panel chat" aria-label="Conversation">
+        <div class="chat-head">
+          <div class="portrait" id="portraitWrap"><img id="portrait" src="img/suspicious.png" alt="Character looks suspicious" width="72" height="106" /></div>
+          <div>
+            <div class="chat-name" id="chatName">Officer Marcus</div>
+            <div class="chat-role" id="chatRole">Head of Security</div>
+            <div class="mood suspicious" id="mood">SUSPICIOUS</div>
+          </div>
+          <div class="online"><span class="dot green"></span>ONLINE</div>
+        </div>
+
+        <div class="messages" id="messages" aria-live="polite"></div>
+
+        <div class="typing hidden" id="typing">
+          <span id="typingName">Officer Marcus</span> is thinking<span class="typing-dots"><i></i><i></i><i></i></span>
+        </div>
+
+        <div class="error-banner hidden" id="errorBanner" role="alert"></div>
+
+        <form class="composer" id="composer" autocomplete="off">
+          <textarea id="input" rows="1" maxlength="500" placeholder="Type your message… (Enter to send, Shift+Enter for a new line)" aria-label="Your message"></textarea>
+          <div class="composer-side">
+            <span class="counter" id="counter">0/500</span>
+            <button class="btn btn-primary" id="sendBtn" type="submit">SEND ▸</button>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <!-- ============ SIDE COLUMN ============ -->
+    <aside class="side-col">
+      <section class="panel" aria-labelledby="credsTitle">
+        <div class="panel-title" id="credsTitle"><span class="dot green"></span>BRIEFING · <span id="briefingTitle">Guard handbook</span></div>
+        <ul class="cover" id="cover"></ul>
+        <div class="subhead">INTEL · they may quiz you on this</div>
+        <ul class="facts" id="facts"></ul>
+        <p class="hint">Answers aren't written word-for-word, so work them out. Their other questions are easy common sense.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="checklistTitle">
+        <div class="panel-title" id="checklistTitle"><span class="dot amber"></span>OBJECTIVES</div>
+        <ul class="checklist" id="checklist"></ul>
+      </section>
+
+      <section class="panel" aria-labelledby="tipsTitle">
+        <div class="panel-title" id="tipsTitle"><span class="dot red"></span>FIELD NOTES</div>
+        <ul class="tips">
+          <li>Correct answer −10 · wrong answer +10.</li>
+          <li>Frank (relaxed + respectful) −5.</li>
+          <li>Too professional +5. Calling anyone “sir” always counts!</li>
+          <li>Too frank (rude, pushy, “just let me in”) +5.</li>
+          <li>Keep your name the same in both stages.</li>
+          <li>Upstairs, tell the vault keeper who sent you.</li>
+          <li>Marcus arrests you at 65%. Vance at 55%. Careful!</li>
+          <li>Gibberish costs exactly +5.</li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">A fictional game. No real banks, people or procedures are depicted.</footer>
+
+  <!-- ============ OVERLAYS ============ -->
+  <div class="overlay hidden" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+    <div class="overlay-card" id="overlayCard">
+      <div class="overlay-icon" id="overlayIcon">✓</div>
+      <h2 id="overlayTitle">Stage complete</h2>
+      <p id="overlayText"></p>
+      <div class="overlay-stats" id="overlayStats"></div>
+      <button class="btn btn-primary" id="overlayBtn" type="button">Continue</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

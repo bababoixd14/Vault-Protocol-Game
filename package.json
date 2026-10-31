@@ -1,0 +1,23 @@
+{
+  "name": "bank-security-game",
+  "version": "1.0.0",
+  "description": "AI-powered bank security awareness simulation game using Gemma 4 (hosted via the Gemini API).",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "check": "node server/checkGemma.js",
+    "test": "node --test test/game.test.js"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": ["hacktoberfest", "mlh", "gemma", "security-awareness", "game"],
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.32.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  }
+}
